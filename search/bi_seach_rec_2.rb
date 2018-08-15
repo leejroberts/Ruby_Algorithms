@@ -1,10 +1,10 @@
+# frozen_string_literal: true
 
 array_1 = Array(1..10) # generates an array from a range
 
-
-def bi_search(search_array, search_value, low=0, high=nil)
-  high = high || search_array.length - 1
-  middle = ((low + high) / 2 ).ceil
+def bi_search(search_array, search_value, low = 0, high = nil)
+  high ||= search_array.length - 1
+  middle = ((low + high) / 2).ceil
   if low > high
     return -1
   elsif search_value == search_array[middle]
@@ -14,9 +14,8 @@ def bi_search(search_array, search_value, low=0, high=nil)
   elsif search_value > search_array[middle]
     low = middle + 1
   end
-  bi_search(search_array, search_value, low=low, high=high)
+  bi_search(search_array, search_value, low = low, high = high)
 end
-
 
 puts bi_search(array_1, 2)
 puts bi_search(array_1, 2.5)

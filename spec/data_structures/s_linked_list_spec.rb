@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rspec'
-require_relative '../../data_structures/linked_list'
+require_relative '../../data_structures/s_linked_list'
 
 RSpec.describe 'LinkedList' do
   it 'instatiates with a single value' do
@@ -10,7 +10,7 @@ RSpec.describe 'LinkedList' do
   end
 
   it 'can have values pushed onto it' do
-    linked_list = LinkedList.new()
+    linked_list = LinkedList.new
     linked_list.push(1)
     expect(linked_list.head.value).to eq(1)
     linked_list.push(4)
@@ -18,7 +18,7 @@ RSpec.describe 'LinkedList' do
   end
 
   it 'can search values within it' do
-    linked_list = LinkedList.new()
+    linked_list = LinkedList.new
     (1..20).to_a.shuffle.each do |item|
       linked_list.push(item)
     end
@@ -42,7 +42,7 @@ RSpec.describe 'LinkedList' do
   end
 
   it 'can return values using brackets' do
-    linked_list = LinkedList.new()
+    linked_list = LinkedList.new
     (1..20).each do |num|
       linked_list.push(num)
     end
@@ -50,8 +50,8 @@ RSpec.describe 'LinkedList' do
     expect(linked_list[19]).to eq(20)
   end
 
-  it "can set values using brackets" do
-    linked_list = LinkedList.new()
+  it 'can set values using brackets' do
+    linked_list = LinkedList.new
     (1..20).each do |num|
       linked_list.push(num)
     end
