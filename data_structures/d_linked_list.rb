@@ -34,13 +34,12 @@ class DoubleLinkedList
 
   def insert(value, index)
     return false if index > length - 1
-    list_index = 0
     after_node = node_at_index(index)
     if after_node.value.nil?
       after_node.value = value
     elsif after_node.previous_node
       before_node = after_node.previous_node
-      insert_node = Node.new(value, previous_node = before_node, next_node = after_node)
+      insert_node = Node.new(value, after_node, before_node)
       before_node.next_node = insert_node
       after_node.previous_node = insert_node
     end
@@ -52,12 +51,9 @@ class DoubleLinkedList
 
   def node_with_value(value)
     current_node = @head
-    while current_node&.value
-      if current_node.value == value
-        return current_node
-      else
-        current_node = current_node.next_node
-      end
+    while current_node.value
+      return current_node if current_node.value == value
+      current_node = current_node.next_node
     end
     false
   end
