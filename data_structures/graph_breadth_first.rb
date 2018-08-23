@@ -2,14 +2,14 @@
 
 class Person
   attr_reader :name, :friends
-
   def initialize(name)
     @name = name
     @friends = []
   end
 
+  # add Instance of Person to friends array
   def add_friend(person_obj)
-    return nil if @friends.include?(person_obj)
+    return nil if !person_obj.instance_of(Person) || @friends.include?(person_obj)
     @friends << person_obj
   end
 end
@@ -28,5 +28,4 @@ class Network
       member = Person.new()
 
   end
-
 end
