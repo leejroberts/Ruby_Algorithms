@@ -12,7 +12,7 @@ RSpec.describe BiTree do
     (1..100).to_a.shuffle.each { |num| bi_tree_lots_values.add(num) }
   end
 
-  it 'can initiialize' do
+  it 'can initialize' do
     expect(bi_tree).to be_instance_of(BiTree)
   end
 
@@ -20,16 +20,13 @@ RSpec.describe BiTree do
     bi_tree.add(10)
     bi_tree.add(20)
     expect(bi_tree.root.value).to eq(10)
-    expect(bi_tree.node_count).to eq(2)
+    expect(bi_tree.find_node(20).value).to eq(20)
   end
 
   it 'can add multiple values' do
-    expect(bi_tree_mult_values.node_count).to eq(10)
-  end
-
-  it 'will not add duplicate values' do
-    bi_tree_mult_values.add(10)
-    expect(bi_tree_mult_values.node_count).to eq(10)
+    (1..10).to_a.each do |num|
+      expect(bi_tree_mult_values.find_node(num).value).to eq(num)
+    end
   end
 
   it 'returns nil if value not present' do
@@ -41,15 +38,50 @@ RSpec.describe BiTree do
     expect(bi_tree_lots_values.find_node(22).value).to eq(22)
   end
 
-  it 'returns a count for all nodes' do
-    expect(bi_tree_mult_values.count_nodes).to eq(10)
-  end
-
-  it 'can remove the value from a single node' do
+  it 'can remove the root node' do
     bi_tree.add(20)
     bi_tree.remove(20)
+    expect(bi_tree.find_node(20)).to be_nil
+  end
+
+  it 'can remove a leaf node' do
+    bi_tree.add(10)
+    bi_tree.add(20)
+    bi_tree.remove(20)
+    expect(bi_tree.find_node(10)).to be_truthy
     expect(bi_tree.find_node(20)).to be_falsy
-    expect(bi_tree.node_count).to eq(1)
+  end
+
+  it 'can remove a node with a right branch' do
+    bi_tree.add(10)
+    bi_tree.add(20)
+    bi_tree.add(30)
+    bi_tree.remove(20)
+    expect(bi_tree.find_node(20)).to be_falsy
+    expect(bi_tree.find_node(10)).to be_truthy
+    expect(bi_tree.find_node(30)).to be_truthy
+  end
+
+  it 'can remove a node with a left branch' do
+    bi_tree.add(10)
+    bi_tree.add(20)
+    bi_tree.add(15)
+    bi_tree.remove(20)
+    expect(bi_tree.find_node(20)).to be_falsy
+    expect(bi_tree.find_node(10)).to be_truthy
+    expect(bi_tree.find_node(15)).to be_truthy
+  end
+
+  it 'can remove a node with both branches' do
+    bi_tree.add(10)
+    bi_tree.add(20)
+    bi_tree.add(30)
+    bi_tree.add(15)
+    bi_tree.remove(20)
+    expect(bi_tree.find_node(20)).to be_falsy
+    expect(bi_tree.find_node(10)).to be_truthy
+    expect(bi_tree.find_node(30)).to be_truthy
+    expect(bi_tree.find_node(15)).to be_truthy
   end
 
   it 'can remove a node and value' do
@@ -57,12 +89,27 @@ RSpec.describe BiTree do
     bi_tree.add(20)
     bi_tree.remove(10)
     expect(bi_tree.find_node(5)).to be_falsy
-    expect(bi_tree.count_nodes).to eq(1)
   end
 
   it 'can remove a node and value' do
     bi_tree_mult_values.remove(5)
     expect(bi_tree_mult_values.find_node(5)).to be_nil
-    expect(bi_tree_mult_values.count_nodes).to eq(9)
+    (1..10).to_a.reject { |num| num == 5 }.each do |num|
+      expect(bi_tree_mult_values.find_node(num)).to be_truthy
+    end
+  end
+
+  # full search is performed multiple times to catch different types of breaks
+  it 'can find all values with a value removed' do
+    10.times do
+      lots_of_values = (1..100).to_a.shuffle!
+      popped_value = lots_of_values.pop
+      bi_tree_lots_values.remove(popped_value)
+      lots_of_values.each do |num|
+        expect(bi_tree_lots_values.find_node(num).value).to eq(num)
+      end
+      # resets for next round
+      bi_tree_lots_values.add(popped_value)
+    end
   end
 end
