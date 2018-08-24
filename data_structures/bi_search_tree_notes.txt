@@ -1,0 +1,16 @@
+to make a binary search tree
+
+the tree will not work optimally if the values are not shuffled before insertion
+
+duplicate values are not added
+
+added values are inserted in the following manner
+  starting with the current node == the root node
+  1. if the value is smaller than the current node, and the left branch is not taken
+    value is inserted into a node at the current node's left_branch
+  1. if the value is larger than the current node, and the left branch is not taken
+    value is inserted into a node at the current node's left_branch
+  1. in the left or right branch node of the current node, if the position is not taken
+
+  in a left branch if the current node's value is smaller
+  in a right branch if the current node's value is larger
